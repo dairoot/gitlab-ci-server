@@ -1,0 +1,40 @@
+version: '3'
+services:
+  gitlab:
+    container_name: gitlab
+    image: gitlab/gitlab-ce
+    # restart: always
+    ports:
+      - "8880:80"
+      - "8443:443"
+      - "2222:22"
+    volumes:
+      - "./gitlab/config:/etc/gitlab"
+      - "./gitlab/logs:/var/log/gitlab"
+      - "./gitlab/data:/var/opt/gitlab"
+    privileged: true
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+            external_url 'http://gitlab.dairoot.cn'
+            gitlab_rails['gitlab_shell_ssh_port'] = 2222
+
+            # email setting
+            gitlab_rails['smtp_enable'] = true
+            gitlab_rails['smtp_address'] = "smtp.163.com"
+            gitlab_rails['smtp_port'] = 465
+            gitlab_rails['smtp_authentication'] = "login"
+            gitlab_rails['smtp_enable_starttls_auto'] = true
+            gitlab_rails['smtp_tls'] = true
+            gitlab_rails['smtp_domain'] = "smtp.163.com"
+            gitlab_rails['smtp_password'] = "xxxxxxxxxx"
+            gitlab_rails['smtp_user_name'] = "xxxxxxxxxx@163.com"
+            gitlab_rails['gitlab_email_from'] = 'xxxxxxxxxx@163.com'
+  gitlab-runner:
+    image: gitlab/gitlab-runner
+    #restart: always
+    container_name: gitlab-runner
+    environment:
+       - CI_SSH_PATH=${CI_SSH_PATH-/root/.ssh}
+    volumes:
+        - ./runner:/etc/gitlab-runner
+        - /var/run/docker.sock:/var/run/docker.sock
