@@ -32,9 +32,8 @@ docker-compose up
 docker exec -it gitlab-runner /bin/bash
 # 添加一个runner 服务 （注：volumes 必须为主机的绝对路径（非docker））
 gitlab-runner register --url http://gitlab \
---docker-volumes $CI_SSH_PATH/id_rsa:/root/.ssh/id_rsa \
---docker-volumes $CI_SSH_PATH/id_rsa.pub:/root/.ssh/id_rsa.pub \
---executor docker --tag-list "test" --docker-image docker:stable
+--docker-volumes $CI_SSH_PATH:/root/.ssh:ro
+、--executor docker --tag-list "test" --docker-image docker:stable
 ```
 
 ## 5. runner web 配置
