@@ -46,7 +46,7 @@ https://gitlab.dairoot.cn/admin/application_settings/ci_cd
 https://gitlab.dairoot.cn/admin/runners/1
 ```
 
-## 编辑 runner/config.toml
+## 6. 编辑 runner/config.toml
 ```
 将 volumes = ["/cache"] 更改为 volumes = ["/home/gitlab/build_cache:/cache:rw"]
 ```
