@@ -32,7 +32,8 @@ docker-compose up
 docker exec -it gitlab-runner /bin/bash
 # 添加一个runner 服务 （注：volumes 必须为主机的绝对路径（非docker））
 gitlab-runner register --url http://gitlab \
---docker-volumes $CI_SSH_PATH:/root/.ssh:ro \
+--docker-volumes $CI_SSH_PATH/id_rsa:/root/.ssh/id_rsa:ro \
+--docker-volumes $CI_SSH_PATH/id_rsa.pub:/root/.ssh/id_rsa.pub:ro \
 --executor docker --tag-list "test" --docker-image docker:stable
 ```
 
@@ -44,3 +45,9 @@ https://gitlab.dairoot.cn/admin/application_settings/ci_cd
 # 运行未标记的作业
 https://gitlab.dairoot.cn/admin/runners/1
 ```
+
+## 编辑 runner/config.toml
+```
+将 volumes = ["/cache"] 更改为 volumes = ["/home/gitlab/build_cache:/cache:rw"]
+```
+
